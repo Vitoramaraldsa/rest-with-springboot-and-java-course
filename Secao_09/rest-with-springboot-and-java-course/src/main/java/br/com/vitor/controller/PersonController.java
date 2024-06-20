@@ -22,32 +22,32 @@ public class PersonController {
 
 
     //retorna a busca de pessoas por id
-    @GetMapping(value = "/{id}", produces = "application/json")
+    @GetMapping(value = "/{id}", produces = {"application/json","application/xml"})
     PersonVo getPerson(@PathVariable(value = "id") Long id){
        return personService.findById(id);
     }
 
     //retorna todas as pessoas da base de dados
-    @GetMapping(produces = "application/json")
+    @GetMapping(produces = {"application/json","application/xml"})
     List<PersonVo> getAllPersons(){
          return personService.findAll();
     }
 
     //cria uma nova pessoa
-     @PostMapping(produces = "application/json", consumes = "application/json")
+     @PostMapping(produces = {"application/json","application/xml"}, consumes = "application/json")
      @ResponseStatus(HttpStatus.CREATED)
      PersonVo addPerson(@RequestBody PersonVo person){
         return personService.addPerson(person);
      }
 
     //cria uma nova pessoa
-    @PutMapping(produces = "application/json", consumes = "application/json")
+    @PutMapping(produces = {"application/json","application/xml"}, consumes = "application/json")
     PersonVo updatePerson(@RequestBody PersonVo person){
         return personService.updatePerson(person);
     }
 
     //retorna a busca de pessoas por id
-    @DeleteMapping(value = "/{id}", produces = "application/json")
+    @DeleteMapping(value = "/{id}", produces = {"application/json","application/xml"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deletePerson(@PathVariable(value = "id") Long id){
          personService.deleteById(id);
@@ -56,32 +56,32 @@ public class PersonController {
     //V2 Controllers
 
     //retorna a busca de pessoas por id
-    @GetMapping(value = "/v2/{id}", produces = "application/json")
+    @GetMapping(value = "/v2/{id}", produces = {"application/json","application/xml"})
     PersonVoV2 getPersonV2(@PathVariable(value = "id") Long id){
         return personService.findByIdV2(id);
     }
 
     //retorna todas as pessoas da base de dados
-    @GetMapping(value = "/v2", produces = "application/json")
+    @GetMapping(value = "/v2", produces = {"application/json","application/xml"})
     List<PersonVoV2> getAllPersonsV2(){
         return personService.findAllV2();
     }
 
     //cria uma nova pessoa
-    @PostMapping(value = "/v2", produces = "application/json", consumes = "application/json")
+    @PostMapping(value = "/v2", produces = {"application/json","application/xml"}, consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     PersonVoV2 addPersonV2(@RequestBody PersonVoV2 person){
         return personService.addPersonV2(person);
     }
 
     //cria uma nova pessoa
-    @PutMapping(value = "/v2", produces = "application/json", consumes = "application/json")
+    @PutMapping(value = "/v2", produces = {"application/json","application/xml"}, consumes = "application/json")
     PersonVoV2 updatePersonV2(@RequestBody PersonVoV2 person){
         return personService.updatePersonV2(person);
     }
 
     //retorna a busca de pessoas por id, apenas a rota foi alterada para fins de conformidade
-    @DeleteMapping(value = "/v2/{id}", produces = "application/json")
+    @DeleteMapping(value = "/v2/{id}", produces = {"application/json","application/xml"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deletePersonV2(@PathVariable(value = "id") Long id){
         personService.deleteById(id);
