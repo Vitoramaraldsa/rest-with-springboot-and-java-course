@@ -1,8 +1,10 @@
 package br.com.vitor.service;
 
 import br.com.vitor.data.vo.V1.PersonVo;
+import br.com.vitor.data.vo.V2.PersonVoV2;
 import br.com.vitor.exceptions.ResourceNotFoundException;
 import br.com.vitor.mapper.DozerMapper;
+import br.com.vitor.mapper.custom.PersonMapper;
 import br.com.vitor.model.Person;
 import br.com.vitor.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,13 @@ public class PersonService implements PersonInterfaceService{
 
     @Autowired
     private PersonRepository repository;
+
+    @Autowired
+    private PersonMapper personMapper;
+
     private Logger logger = Logger.getLogger(Person.class.getName());
 
+    //v1 services.
     public PersonVo findById(Long id) {
         logger.info("Finding person by id...");
         var entity = repository.findById(id);
@@ -54,11 +61,49 @@ public class PersonService implements PersonInterfaceService{
             throw new ResourceNotFoundException("Pessoa não localizada.");
         }
         return DozerMapper.parseObject(repository.save(entity), PersonVo.class);
+    }
 
+
+    //v2 services.
+    @Override
+    public PersonVoV2 findByIdV2(Long id) throws ResourceNotFoundException {
+        logger.info("Finding person by id...");
+        var entity = repository.findById(id);
+        if (entity.isEmpty()){
+            throw new ResourceNotFoundException("Id não encontrado");
+        }
+        return personMapper.convertEntityToVo(entity.get());
+    }
+
+    @Override
+    public List<PersonVoV2> findAllV2() throws ResourceNotFoundException {
+        logger.info("Finding all persons...");
+        List<PersonVoV2> personsList = personMapper.convertListEntityToVo(repository.findAll());
+        if(personsList.isEmpty()){
+            throw new ResourceNotFoundException("Persons not found");
+        }
+        return personsList;
+    }
+
+    @Override
+    public PersonVoV2 addPersonV2(PersonVoV2 person) {
+        logger.info("Adding person...");
+        var entity = personMapper.convertVoToEntity(person);
+        return personMapper.convertEntityToVo(repository.save(entity));
+    }
+
+    @Override
+    public PersonVoV2 updatePersonV2(PersonVoV2 person) {
+        logger.info("Updating person...");
+        var entity = personMapper.convertVoToEntity(person);
+        if(repository.findById(person.getId()).isEmpty()){
+            throw new ResourceNotFoundException("Pessoa não localizada.");
+        }
+        return personMapper.convertEntityToVo(repository.save(entity));
     }
 
     //deleta as pessoas com base no id
-    
+    @Override
     public void deleteById(Long id) {
         logger.info("Deleting person by id...");
         var entity = repository.findById(id);

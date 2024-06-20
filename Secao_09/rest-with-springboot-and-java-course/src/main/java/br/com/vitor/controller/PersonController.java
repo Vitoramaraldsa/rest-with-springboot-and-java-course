@@ -1,6 +1,7 @@
 package br.com.vitor.controller;
 
 import br.com.vitor.data.vo.V1.PersonVo;
+import br.com.vitor.data.vo.V2.PersonVoV2;
 import br.com.vitor.exceptions.ResourceNotFoundException;
 import br.com.vitor.mapper.DozerMapper;
 import br.com.vitor.model.Person;
@@ -50,6 +51,40 @@ public class PersonController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deletePerson(@PathVariable(value = "id") Long id){
          personService.deleteById(id);
+    }
+
+    //V2 Controllers
+
+    //retorna a busca de pessoas por id
+    @GetMapping(value = "/v2/{id}", produces = "application/json")
+    PersonVoV2 getPersonV2(@PathVariable(value = "id") Long id){
+        return personService.findByIdV2(id);
+    }
+
+    //retorna todas as pessoas da base de dados
+    @GetMapping(value = "/v2", produces = "application/json")
+    List<PersonVoV2> getAllPersonsV2(){
+        return personService.findAllV2();
+    }
+
+    //cria uma nova pessoa
+    @PostMapping(value = "/v2", produces = "application/json", consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    PersonVoV2 addPersonV2(@RequestBody PersonVoV2 person){
+        return personService.addPersonV2(person);
+    }
+
+    //cria uma nova pessoa
+    @PutMapping(value = "/v2", produces = "application/json", consumes = "application/json")
+    PersonVoV2 updatePersonV2(@RequestBody PersonVoV2 person){
+        return personService.updatePersonV2(person);
+    }
+
+    //retorna a busca de pessoas por id, apenas a rota foi alterada para fins de conformidade
+    @DeleteMapping(value = "/v2/{id}", produces = "application/json")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deletePersonV2(@PathVariable(value = "id") Long id){
+        personService.deleteById(id);
     }
 
 }
