@@ -3,7 +3,7 @@ spring:
     url: jdbc:mysql://localhost:3306/rest_with_spring_boot_vitor
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: Vitor52639401
+    password: admin
 
   jpa:
     open-in-view: false
@@ -13,3 +13,7 @@ spring:
       #hibernate:
         #dialect: org.hibernate.dialect.MySQLDialect
         show-sql: false
+
+spring-doc:
+  pathsToMatch: /api/**/v2/**
+  use-root-pah: true

@@ -6,6 +6,7 @@ import br.com.vitor.exceptions.ResourceNotFoundException;
 import br.com.vitor.mapper.DozerMapper;
 import br.com.vitor.model.Person;
 import br.com.vitor.service.PersonService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/person")
+@RequestMapping(value = "api/person")
+@Tag(name = "People", description = "Endpoint for manage peoples")
 public class PersonController {
 
     @Autowired
@@ -22,32 +24,32 @@ public class PersonController {
 
 
     //retorna a busca de pessoas por id
-    @GetMapping(value = "/{id}", produces = {"application/json","application/xml"})
+    @GetMapping(value = "/v1/{id}", produces = {"application/json","application/xml"})
     PersonVo getPerson(@PathVariable(value = "id") Long id){
        return personService.findById(id);
     }
 
     //retorna todas as pessoas da base de dados
-    @GetMapping(produces = {"application/json","application/xml"})
+    @GetMapping(value = "/v1", produces = {"application/json","application/xml"})
     List<PersonVo> getAllPersons(){
          return personService.findAll();
     }
 
     //cria uma nova pessoa
-     @PostMapping(produces = {"application/json","application/xml"}, consumes = "application/json")
+     @PostMapping(value = "/v1", produces = {"application/json","application/xml"}, consumes = "application/json")
      @ResponseStatus(HttpStatus.CREATED)
      PersonVo addPerson(@RequestBody PersonVo person){
         return personService.addPerson(person);
      }
 
     //cria uma nova pessoa
-    @PutMapping(produces = {"application/json","application/xml"}, consumes = "application/json")
+    @PutMapping(value = "/v1" , produces = {"application/json","application/xml"}, consumes = "application/json")
     PersonVo updatePerson(@RequestBody PersonVo person){
         return personService.updatePerson(person);
     }
 
     //retorna a busca de pessoas por id
-    @DeleteMapping(value = "/{id}", produces = {"application/json","application/xml"})
+    @DeleteMapping(value = "/v1/{id}", produces = {"application/json","application/xml"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deletePerson(@PathVariable(value = "id") Long id){
          personService.deleteById(id);

@@ -1,4 +1,4 @@
-package br.com.vitor.webConfig;
+package br.com.vitor.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
